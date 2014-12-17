@@ -1,0 +1,282 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/examplestyle.css" rel="stylesheet">
+<script src="../kairos.js"></script>
+
+
+</head>
+<body>
+
+
+<script>
+
+
+  $(document).ready(function() {
+
+  // kairos SDK
+  var kairos = new Kairos("e2a8eaa7", "4092e4a45070bca728644e9285f084b4");
+
+  // holder for the image data
+  var global_image_data;
+
+
+  function imageToDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL();
+  }
+
+
+  // drawing method
+  function myDrawMethod(face)
+  {
+
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      var imageObj = new Image();
+
+      imageObj.onload = function() 
+      {
+        context.drawImage(imageObj, 0, 0);
+
+        // draw face box
+        context.beginPath();
+        context.rect(face.topLeftX, face.topLeftY, face.width, face.height);
+        context.lineWidth = 4;
+        context.strokeStyle = '#139C8A';
+        context.stroke();
+
+        // draw left eye
+        context.beginPath();
+        context.moveTo(face.leftEyeCornerLeftX, face.leftEyeCornerLeftY);
+        context.lineTo(face.leftEyeCornerRightX, face.leftEyeCornerRightY);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(face.leftEyeCenterX, (face.leftEyeCenterY + (face.height / 25)));
+        context.lineTo(face.leftEyeCenterX, (face.leftEyeCenterY - (face.height / 25)));
+        context.stroke();
+
+        // draw right eye
+        context.beginPath();
+        context.moveTo(face.rightEyeCornerLeftX, face.rightEyeCornerLeftY);
+        context.lineTo(face.rightEyeCornerRightX, face.rightEyeCornerRightY);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(face.rightEyeCenterX, (face.rightEyeCenterY + (face.height / 25)));
+        context.lineTo(face.rightEyeCenterX, (face.rightEyeCenterY - (face.height / 25)));
+        context.stroke();
+
+        // left eyebrow
+        context.beginPath();
+        context.moveTo(face.leftEyeBrowLeftX, face.leftEyeBrowLeftY);
+        context.lineTo(face.leftEyeBrowMiddleX, face.leftEyeBrowMiddleY);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(face.leftEyeBrowMiddleX, face.leftEyeBrowMiddleY);
+        context.lineTo(face.leftEyeBrowRightX, face.leftEyeBrowRightY);
+        context.stroke();
+
+        // right eyebrow
+        context.beginPath();
+        context.moveTo(face.rightEyeBrowLeftX, face.rightEyeBrowLeftY);
+        context.lineTo(face.rightEyeBrowMiddleX, face.rightEyeBrowMiddleY);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(face.rightEyeBrowMiddleX, face.rightEyeBrowMiddleY);
+        context.lineTo(face.rightEyeBrowRightX, face.rightEyeBrowRightY);
+        context.stroke();
+
+        // draw mouth
+        context.beginPath();
+        context.moveTo(face.lipCornerLeftX, face.lipCornerLeftY);
+        context.lineTo(face.lipLineMiddleX, face.lipLineMiddleY);
+        context.stroke();
+        context.beginPath();
+        context.moveTo(face.lipLineMiddleX, face.lipLineMiddleY);
+        context.lineTo(face.lipCornerRightX, face.lipCornerRightY);
+        context.stroke();
+
+        // draw nose
+        context.beginPath();
+        context.moveTo(face.nostrilLeftSideX, face.nostrilLeftSideY);
+        context.lineTo(face.nostrilLeftHoleBottomX, face.nostrilLeftHoleBottomY);
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(face.nostrilRightSideX, face.nostrilRightSideY);
+        context.lineTo(face.nostrilRightHoleBottomX, face.nostrilRightHoleBottomY);
+        context.stroke();
+      };
+
+      imageObj.src = 'data:image/jpeg;base64,' + global_image_data;
+  }
+
+
+
+
+  function myDetectCallback(response)
+  {
+
+      document.getElementById("kairos_response").innerHTML = response.responseText;
+
+      $response = $("#kairos_response");
+
+      $response.removeClass("modal");
+
+      var kairosJSON = JSON.parse(response.responseText);
+
+      if(!kairosJSON.images[0].faces[0])
+      {
+        console.log('no images in face response');
+        return;
+      }
+      
+      document.getElementById("kairos_response").innerHTML = JSON.stringify(kairosJSON, null, "\t");
+
+      // call custom drawing method
+      myDrawMethod(kairosJSON.images[0].faces[0]);
+  }
+
+
+
+
+  function handleFileSelect(evt) {
+
+    document.getElementById("kairos_response").innerHTML = "<i>(Response will appear here)</i>";
+
+    $response = $("#kairos_response");
+
+    $response.addClass("modal");
+
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var files = evt.dataTransfer.files; // FileList object.
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+       reader.onload = (function(theFile) {
+        return function(e) {
+
+          var canvas = document.getElementById('myCanvas');
+          var context = myCanvas.getContext('2d');
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          var imageObj = new Image;
+          imageObj.onload = function(){
+              context.drawImage(imageObj,0,0); // Or at whatever offset you like
+            };
+          imageObj.src = e.target.result;
+
+          var image_data = e.target.result;
+
+          var maxWidth = 300;
+          if(imageObj.width > maxWidth)
+          {
+            var ratio = maxWidth / imageObj.width;
+            image_data = imageToDataUri(imageObj, imageObj.width * ratio, imageObj.height * ratio);
+            imageObj.src = image_data;
+          }
+
+          image_data = String(image_data);
+          image_data = image_data.replace("data:image/jpeg;base64,", "");
+          image_data = image_data.replace("data:image/jpg;base64,", "");
+          image_data = image_data.replace("data:image/png;base64,", "");
+          image_data = image_data.replace("data:image/gif;base64,", "");
+          image_data = image_data.replace("data:image/bmp;base64,", "");
+          global_image_data = image_data;
+
+          var options = { "selector" : "FULL"};
+
+          // pass your callback method to the Detect function
+          kairos.detect(image_data, myDetectCallback, options);
+
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+
+    }
+  }
+
+
+
+
+
+  function handleDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  }
+
+  // Setup the dnd listeners.
+  var dropZone = document.getElementById('drop_zone');
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
+
+
+  });
+  </script>
+
+<div class="container">
+
+<h1>Detect</h2>
+  <i>This example demonstrates the kairos /detect method. The detect method finds faces within an image and returns data describing the face features. Drop an image containing a single face into the box below and wait for the response.</i>
+
+<br />
+<br />
+
+  <div class="row">
+        <div class="col-lg-6">
+        <div id="drop_zone">Drop an image here!
+        <canvas id="myCanvas" width="400" height="400"></canvas>
+    </div>
+        </div>
+
+        <div id="kairos_response" class="col-lg-6" style="padding:10px;border:1px solid rgba(51, 51, 51, 0.08);background-color: rgba(204, 204, 204, 0.26);"><i>(Response will appear here)</i></div>
+  </div>
+
+</div> <!-- /container -->
+
+
+    
+<?php 
+
+
+?>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
