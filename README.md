@@ -45,7 +45,6 @@ If you just want to do a quick test run, open one of the **example scripts** inc
 
 ```
  <script src="assets/js/kairos.js"></script>
-
 ```
 
 ## Authenticate Once
