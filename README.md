@@ -53,7 +53,7 @@ Before you can make API calls you'll need to pass Kairos your credentials **App 
 
 ```
 // instantiates a new instance of the Kairos client
-  var kairos = new Kairos("asr8wsm", "m38rmse70bca728644etmesrif084b4");
+  var kairos = new Kairos("app_id", "api_key");
 ```
 
 
