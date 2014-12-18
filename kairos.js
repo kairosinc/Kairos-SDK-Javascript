@@ -14,7 +14,6 @@ var Kairos = function(app_id, api_key)
   this.app_id   = app_id;
   this.api_key  = api_key;
   this.api_host = 'http://api.kairos.com/';
-  //var url = 'http://99b30ce9-9f046a0bbd25.my.apitools.com';
 };
 
 
