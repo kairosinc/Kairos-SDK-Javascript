@@ -3,7 +3,7 @@ Kairos-SDK-Javascript
 
 Kairos is the easist way add **Face-Recognition** to your web applications. Our API provides a full-featured and robust Face-Recognition backend, right out of the box. This is the Javascript wrapper for the [Kairos Facial Recognition API](https://www.kairos.com). The package includes a **client** _(kairos.js)_ you can use as an easy client to the API. Continue reading to learn how to integrate Kairos into your web application.
 
-_Thanks to contributions by some of our customers, we also have [Ruby](https://github.com/kany/kairos-api) and [.NET](https://github.com/humbywan/Kairos.Net) wrappers available. Also see our [PHP SDK](https://github.com/kairosinc/Kairos-SDK-iOS) and [iOS SDK](https://github.com/kairosinc/Kairos-SDK-iOS)._
+_Thanks to contributions by some of our customers, we also have [Ruby](https://github.com/kany/kairos-api) and [.NET](https://github.com/humbywan/Kairos.Net) wrappers available. Also see our [PHP SDK](https://github.com/kairosinc/Kairos-SDK-iOS), our [Android SDK](https://github.com/kairosinc/Kairos-SDK-Android) and our [iOS SDK](https://github.com/kairosinc/Kairos-SDK-iOS)._
 
 ## What You'll Need
 
@@ -111,7 +111,7 @@ kairos.recognize(image_data, gallery_id, myCallback, options);
     
 ## Detect Image Attributes Using Image Data
 
-The **Detect** method takes an image of a subject and **returns various attributes pertaining to the face features**. The detect methods also accept an optional 'selector' parameter, allowing you to tweak the scope of the response ([see docs](https://www.kairos.com/docs) for more info on the detect selector). Here's an example of using detect via method that accepts image data in base64 format, sends it to the API, and returns face attributes:    
+The **Detect** method takes an image of a subject and **returns various attributes pertaining to the face features**. The detect methods also accept an optional 'selector' parameter, allowing you to tweak the scope of the response ([see docs](https://www.kairos.com/docs/face-recognition) for more info on the detect selector). Here's an example of using detect via method that accepts image data in base64 format, sends it to the API, and returns face attributes:    
 
 ```
 // (1) set up your callback method
@@ -202,4 +202,4 @@ kairos.recognize(image_data, gallery_id, myCallback, options);
 [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/kairos-api/kairos-facial-recognition-api)
 
 ##Support 
-Have an issue? [Contact us](mailto:api@kairos.com) or [create an issue on GitHub](https://github.com/kairosinc/Kairos-SDK-Javascript)
+Have an issue? [Contact us](https://www.kairos.com/contact) or [create an issue on GitHub](https://github.com/kairosinc/Kairos-SDK-Javascript)
