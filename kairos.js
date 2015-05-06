@@ -85,7 +85,7 @@ Kairos.prototype.detect = function(image_data, callback, options) {
         "app_key"         : this.api_key
       };
 
-  	$.ajax(url, {
+  	jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
@@ -150,7 +150,7 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
         "app_key"         : this.api_key
       };
 
-    $.ajax(url, {
+    jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
@@ -192,7 +192,7 @@ Kairos.prototype.recognize = function(image_data, gallery_id, callback, options)
   
   var url = this.api_host + 'recognize';
 
-  var data = { 'image' : image_data , 'gallery_name' : gallery_id, 'subject_id' : subject_id};
+  var data = { 'image' : image_data , 'gallery_name' : gallery_id };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -204,7 +204,7 @@ Kairos.prototype.recognize = function(image_data, gallery_id, callback, options)
         "app_key"         : this.api_key
       };
 
-    $.ajax(url, {
+    jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
@@ -252,7 +252,7 @@ Kairos.prototype.viewGalleries = function(callback, options) {
         "app_key"         : this.api_key
       };
 
-    $.ajax(url, {
+    jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
@@ -306,7 +306,7 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
         "app_key"         : this.api_key
       };
 
-    $.ajax(url, {
+    jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
@@ -360,7 +360,7 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
         "app_key"         : this.api_key
       };
 
-    $.ajax(url, {
+    jQuery.ajax(url, {
         headers  : header_settings,
         type     : "POST",
         dataType : "raw",
