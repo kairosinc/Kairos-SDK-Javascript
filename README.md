@@ -167,6 +167,26 @@ var gallery_id = 'friends1';
 kairos.viewSubjectsInGallery(gallery_id, myCallback);
 ```
 
+## Remove a Gallery
+
+This method removes a given gallery:
+
+```
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var gallery_id = 'friends1';
+
+// (3) pass your params and callback to the function
+kairos.removeGallery(gallery_id, myCallback);
+```
+
+
+
 ## Remove a Subject
 
 This method removes a subject from given gallery:

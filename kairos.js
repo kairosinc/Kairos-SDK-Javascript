@@ -320,6 +320,55 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
 
 
 
+
+
+/* Remove a gallery
+  @param gallery_id : the gallery name you want to enroll into
+  @param callback   : your callback function will be called when the request completes */
+Kairos.prototype.removeGallery = function(gallery_id, callback) {
+
+  if(this.authenticationProvided() == false) {
+    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    return;
+  }
+
+  if(isJQueryAvailable() == false) {
+    console.log('Kairos Error: jQuery is required to use Kairos');
+    return;
+  }
+
+  if(!gallery_id) {
+    console.log('Kairos Error: the gallery_id parameter is required');
+    return;
+  }
+  
+  var url = this.api_host + 'gallery/remove';
+
+  var data = { 'gallery_name' : gallery_id };
+
+  if(!jQuery.isEmptyObject(options)) {
+      data = jQuery.extend(data, options);
+  }
+
+  var header_settings = {
+    "Content-type"    : "application/json",
+        "app_id"          : this.app_id,
+        "app_key"         : this.api_key
+      };
+
+    jQuery.ajax(url, {
+        headers  : header_settings,
+        type     : "POST",
+        dataType : "raw",
+        data     : JSON.stringify(data),
+        success  : callback,
+        error    : callback
+      });
+};
+
+
+
+
 /* Remove a subject from a gallery
   @param subject_id : the subject id you want to enroll the image under
   @param gallery_id : the gallery name you want to enroll into
