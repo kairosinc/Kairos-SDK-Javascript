@@ -1,0 +1,253 @@
+<html>
+  	<head>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="assets/css/examplestyle.css" rel="stylesheet">
+	    <script src="../kairos.js"></script>
+	    <style>
+			#view_data {
+				padding: 10px 0;
+				color: #ff0000;
+				word-wrap: break-word;
+			}
+			#authenticationError {
+				color: #ff0000;
+			}
+			.method-test {
+				margin-left: 30px;
+			}
+			.glyphicon {
+				float: left;
+				margin-top: 2px;
+				margin-right: 10px;
+			}
+			form {
+				margin-left: 30px;
+			}
+			#loader {
+				display: none;
+				width: 250px;
+				float: left;
+			}
+    	</style>
+  </head>
+  <body>
+    <script>
+      var methods_test = methods_test || {}
+
+        methods_test = {
+            init: function () {
+              $("#apiMethodsTests").hide();
+              this.setActions();
+            },
+            setActions: function () {
+              	var self = this;
+              	$("#enterApiKeys").click(function () {
+              		$("#loader").show();
+              		if ($("#api_id").val() != "" && $("#api_key").val() != "") {
+	                	self.kairos = new Kairos($("#api_id").val(), $("#api_key").val());
+	                  	self.kairos.checkAuthentication(function(cb){
+	                  		if (cb.statusText != "error") {
+	                  			$("#loader").hide();
+	                  			$("#apiMethodsTests").show();
+	                  		}
+	                  		else {
+	                  			$("#loader").hide();
+	                  			$("#apiMethodsTests").hide();
+	                  			$("#authenticationError").html("Authentication Error")
+	                  		}
+	                  	});
+	                }
+	                else {
+	                	$("#loader").hide();
+	               		$("#apiMethodsTests").hide();
+                  		$("#authenticationError").html("Plese enter your API keys")
+	                }
+            	});
+	          	$("#testViewGalleries").click(function () {
+	          		$("#loader").show();
+	          		$("#view_data").empty();
+	                self.kairos.viewGalleries(self.success_cb);
+	            });
+	            $("#testEnroll").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#enrollForm input")) == true) {
+	            		$("#loader").show();
+	                	var image_data = $("#image_data").val();
+	                	var gallery_id = $("#gallery_id_enroll").val();
+	                	var subject_id = $("#subject_id_enroll").val();
+	                	self.kairos.enroll(image_data, gallery_id, subject_id, self.success_cb);
+	            	}
+	            });
+
+	            $("#testViewSubjectsInGallery").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#viewSubjectsInGalleryForm input")) == true) {
+	            		$("#loader").show();
+	                	var gallery_id = $("#gallery_id_view_subjects").val();
+	                	self.kairos.viewSubjectsInGallery(gallery_id, self.success_cb);
+	            	}
+	            });
+
+	            $("#testRemoveSubjectFromGallery").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#removeSubjectFromGalleryForm input")) == true) {
+	            		$("#loader").show();
+	                	var subject_id = $("#subject_id_remove_subject").val();
+		                var gallery_id = $("#gallery_id_remove_subject").val();
+		                self.kairos.removeSubjectFromGallery(subject_id, gallery_id, self.success_cb);
+	            	}
+	            });
+
+	            $("#testRemoveGallery").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#removeGalleryForm input")) == true) {
+	            		$("#loader").show();
+	                	var gallery_id = $("#gallery_id_remove_gallery").val();
+		                self.kairos.removeGallery(gallery_id, self.success_cb);
+	            	}
+	            });
+
+	            $("#testRecognize").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#recognizeForm input")) == true) {
+	            		$("#loader").show();
+	                	var image_data = $("#image_data_recognize").val();
+		                var gallery_id = $("#gallery_id_recognize").val();
+		                self.kairos.recognize(image_data, gallery_id, self.success_cb);
+	            	}
+	            });
+
+	            $("#testDetect").click(function () {
+	            	$("#view_data").empty();
+	            	if (self.validateMe($("#detectForm input")) == true) {
+	            		$("#loader").show();
+	                	var image_data = $("#image_data_detect").val();
+		                self.kairos.detect(image_data, self.success_cb);
+	            	}
+	            });	
+            },
+            validateMe: function(obj) {
+            	var isValid = true;
+            	errorAlert = "";
+        		obj.each(function () {
+            		if($(this).attr("type") == "text") {
+            			if($(this).val() == "") {
+            				isValid = false;
+            				errorAlert = errorAlert + "Please enter a value for " + $(this).attr("name") + "\n";
+            			}
+            		}
+            	});
+            	if (isValid == false) {
+            		alert(errorAlert)
+            	}
+            	return isValid;
+            },
+            success_cb: function(data){
+              $("#view_data").empty();
+              $("#view_data").html(data.responseText);
+              $("#loader").hide();
+              $("input:text").val("");
+              // console.log(data)
+          	}
+            
+        }
+        $(function () {
+          methods_test.init()
+      });
+    </script>
+
+    <div class="container">
+      	<div class="row">
+        	<h3>Enter API Keys:</h3>
+        	<!-- test keys -->
+        	<!-- 7736975c -->
+        	<!-- 7120d65a1779e0c235d5110c9fb8119a -->
+        	<form>
+          		API ID: <input type="text" id="api_id" class="api-key" value="">
+            		API KEY: <input type="text" id="api_key" class="api-key" value="">
+            		<input type="button" id="enterApiKeys" value="Enter" />
+          	</form>
+          	<div id="authenticationError"></div>
+      	</div>
+      	<div class="row">
+        	<div id="apiMethodsTests">
+          		<h3>Test API Methods</h3>
+				<div class="row">
+					<div class="method-test">
+				  		<span class="glyphicon glyphicon-play"></span><h4>viewGalleries() Method</h4>
+				  		<form>
+				    		<input type="button" id="testViewGalleries" value="Test" />
+				  		</form>
+					</div>
+				</div>
+      	<div class="row">
+            <div class="method-test">
+              	<span class="glyphicon glyphicon-play"></span><h4>enroll() Method</h4>
+              	<form id="enrollForm">
+                	Image: <input type="text" id="image_data" name="Image">
+                  	Gallery ID: <input type="text" id="gallery_id_enroll" name="Gallery ID">
+                  	Subject ID: <input type="text" id="subject_id_enroll" name="Subject ID">
+                  	<input type="button" id="testEnroll" value="Test" />
+              	</form>
+            </div>
+      	</div>
+      	<div class="row">
+            <div class="method-test">
+              	<span class="glyphicon glyphicon-play"></span><h4>viewSubjectsInGallery() Method</h4>
+              	<form id="viewSubjectsInGalleryForm">
+                	Gallery ID: <input type="text" id="gallery_id_view_subjects" name="Gallery ID">
+                  	<input type="button" id="testViewSubjectsInGallery" value="Test" />
+              	</form>
+            </div>
+      	</div>
+          	<div class="row">
+            	<div class="method-test">
+              	<span class="glyphicon glyphicon-play"></span><h4>removeSubjectFromGallery() Method</h4>
+              	<form id="removeSubjectFromGalleryForm">
+                  	Subject ID: <input type="text" id="subject_id_remove_subject" name="Subject ID">
+                  	Gallery ID: <input type="text" id="gallery_id_remove_subject" name="Gallery ID">
+                  	<input type="button" id="testRemoveSubjectFromGallery" value="Test" />
+              	</form>
+            </div>
+      	</div>
+      	<div class="row">
+        	<div class="method-test">
+          		<span class="glyphicon glyphicon-play"></span><h4>removeGallery() Method</h4>
+          		<form id="removeGalleryForm">
+              		Gallery ID: <input type="text" id="gallery_id_remove_gallery" name="Gallery ID">
+              		<input type="button" id="testRemoveGallery" value="Test" />
+          		</form>
+        	</div>
+      	</div>
+      	<div class="row">
+            <div class="method-test">
+              	<span class="glyphicon glyphicon-play"></span><h4>recognize() Method</h4>
+              	<form id="recognizeForm">
+                	Image: <input type="text" id="image_data_recognize" name="Image">
+                  	Gallery ID: <input type="text" id="gallery_id_recognize" name="Gallery ID">
+                  	<input type="button" id="testRecognize" value="Test" />
+              	</form>
+            </div>
+      	</div>
+      	<div class="row">
+        	<div class="method-test">
+          		<span class="glyphicon glyphicon-play"></span><h4>detect() Method</h4>
+          		<form id="detectForm">
+            		Image: <input type="text" id="image_data_detect" name="Image">
+              		<input type="button" id="testDetect" value="Test" />
+          		</form>
+          		<!-- <a href="example_detect.html" target="_blank">Face Detect App</a> -->
+        	</div>
+      	</div>
+      	<div class="row">
+        	<h5>Callback:</h5>
+        	<img src="assets/images/loading.gif" id="loader">
+        	<div id="view_data" class="col-lg-8"></div>
+      	</div>
+    </div>
+
+    <script src="assets/js/bootstrap.min.js"></script>
+
+  </body>
+</html> 

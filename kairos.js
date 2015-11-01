@@ -325,7 +325,7 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
 /* Remove a gallery
   @param gallery_id : the gallery name you want to enroll into
   @param callback   : your callback function will be called when the request completes */
-Kairos.prototype.removeGallery = function(gallery_id, callback) {
+Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and api_key before calling this method');
@@ -373,7 +373,7 @@ Kairos.prototype.removeGallery = function(gallery_id, callback) {
   @param subject_id : the subject id you want to enroll the image under
   @param gallery_id : the gallery name you want to enroll into
   @param callback   : your callback function will be called when the request completes */
-Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, callback) {
+Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and api_key before calling this method');
@@ -398,6 +398,47 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
   var url = this.api_host + 'gallery/remove_subject';
 
   var data = { 'gallery_name' : gallery_id, 'subject_id' : subject_id};
+
+  if(!jQuery.isEmptyObject(options)) {
+      data = jQuery.extend(data, options);
+  }
+
+  var header_settings = {
+    "Content-type"    : "application/json",
+        "app_id"          : this.app_id,
+        "app_key"         : this.api_key
+      };
+
+    jQuery.ajax(url, {
+        headers  : header_settings,
+        type     : "POST",
+        dataType : "raw",
+        data     : JSON.stringify(data),
+        success  : callback,
+        error    : callback
+      });
+};
+
+Kairos.prototype.checkAuthentication = function(callback, options) {
+
+  if(this.authenticationProvided() == false) {
+    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    return;
+  }
+
+  if(isJQueryAvailable() == false) {
+    console.log('Kairos Error: jQuery is required to use Kairos');
+    return;
+  }
+
+  if(!callback || !jQuery.isFunction(callback)) {
+    console.log('Kairos Error: the callback parameter is required and must be of type [function]');
+    return;
+  }
+  
+  var url = this.api_host + 'gallery/list_all';
+
+  var data = { };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
