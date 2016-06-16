@@ -126,6 +126,17 @@
 		                self.kairos.detect(image_data, self.success_cb);
 	            	}
 	            });	
+
+              $("#testVerify").click(function () {
+                $("#view_data").empty();
+                if (self.validateMe($("#verifyForm input")) == true) {
+                  $("#loader").show();
+                    var image = $("#image_verify").val();
+                    var gallery_id = $("#gallery_id_verify").val();
+                    var subject_id = $("#subject_id_verify").val();
+                    self.kairos.verify(image, gallery_id, subject_id, self.success_cb);
+                }
+              });
             },
             validateMe: function(obj) {
             	var isValid = true;
@@ -237,9 +248,19 @@
             		Image: <input type="text" id="image_data_detect" name="Image">
               		<input type="button" id="testDetect" value="Test" />
           		</form>
-          		<!-- <a href="example_detect.html" target="_blank">Face Detect App</a> -->
         	</div>
       	</div>
+        <div class="row">
+          <div class="method-test">
+              <span class="glyphicon glyphicon-play"></span><h4>verify() Method</h4>
+              <form id="verifyForm">
+                  Image: <input type="text" id="image_verify" name="Image">
+                  Subject ID: <input type="text" id="subject_id_verify" name="Subject ID">
+                  Gallery ID: <input type="text" id="gallery_id_verify" name="Gallery ID">
+                  <input type="button" id="testVerify" value="Test" />
+              </form>
+          </div>
+        </div>
       	<div class="row">
         	<h5>Callback:</h5>
         	<img src="assets/images/loading.gif" id="loader">
