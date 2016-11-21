@@ -23,10 +23,11 @@ If you just want to do a quick test run, open one of the **example scripts** inc
 1. [Create your free developer account](https://www.kairos.com/signup)
 2. Log into the Kairos Developer Dashboard
 3. Create an application and copy your **App Id** & **App Key**
-3. Paste them into the constructor method in example.html 
+3. Paste them into the constructor method in example_detect.html (must be hosted)
 4. Open the script in your **browser**.
 4. Drag an image into the drop zone and wait for the response.
 
+**You can also test all of the Kairos API endpoints by running methods_test.html in your browser.**
 
 
 ---
@@ -57,84 +58,8 @@ Before you can make API calls you'll need to pass Kairos your credentials **App 
 ```
 
 
-
-
-## Enroll an Image Using Data
-
-The **Enroll** method **registers a face for later recognitions**. Here's an example of enrolling a face (subject) using a method that accepts image data in base64 format, and enrolls it as a new subject into your specified gallery:    
-
-```
-// (1) set up your callback method
-function myDetectCallback(response)
-{
-   alert(response.responseText);
-}
-
-// (2) prepare your parameters  
-var base64_data = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n';
-var subject_id  = 'eric';
-var gallery_id  = 'friends1';
-
-
-// (3) pass your params and callback to the function
-kairos.enroll(image_data, gallery_id, subject_id, myCallback);
-```
-
-
-
-
-## Recognize an Image Using Data
-
-The **Recognize** method takes an image of a subject and **attempts to match it against a given gallery of previously-enrolled subjects**. Here's an example of recognizing a subject using a method that accepts image data in base64 format, sends it to the API, and returns a match and confidence value:    
-
-```
-// (1) set up your callback method
-function myDetectCallback(response)
-{
-   alert(response.responseText);
-}
-
-// (2) prepare your parameters  
-base64_data = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n';
-gallery_id  = 'friends1';
-
-// (3) ... as well as any optional parameters you wish to send
-var options = { "threshold" : 0.75 };
-
-
-// (4) pass your params and callback to the function
-kairos.recognize(image_data, gallery_id, myCallback, options);
-```
-
-
-
     
-## Detect Image Attributes Using Image Data
-
-The **Detect** method takes an image of a subject and **returns various attributes pertaining to the face features**. The detect methods also accept an optional 'selector' parameter, allowing you to tweak the scope of the response ([see docs](https://www.kairos.com/docs/face-recognition) for more info on the detect selector). Here's an example of using detect via method that accepts image data in base64 format, sends it to the API, and returns face attributes:    
-
-```
-// (1) set up your callback method
-function myDetectCallback(response)
-{
-   alert(response.responseText);
-}
-
-// (2) prepare your parameters  
-base64_data = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n';
-
-
-// (3) ... as well as any optional parameters you wish to send
-var options = { "selector" : "FULL" };
-
-
-// (4) pass your params and callback to the function
-kairos.detect(image_data, myCallback, options);
-```
-
-
-    
-## List Your Galleries
+## View Your Galleries
 
 This method returns a list of all galleries you've created:
 
@@ -149,7 +74,7 @@ function myDetectCallback(response)
 kairos.viewGalleries(myCallback);
 ```
 
-## List Your Subjects
+## View Your Subjects
 
 This method returns a list of all subjects for a given gallery:
 
@@ -161,31 +86,11 @@ function myDetectCallback(response)
 }
 
 // (2) prepare your parameters  
-var gallery_id = 'friends1';
+var gallery_name = 'friends1';
 
 // (3) pass your params and callback to the function
-kairos.viewSubjectsInGallery(gallery_id, myCallback);
+kairos.viewSubjectsInGallery(gallery_name, myCallback);
 ```
-
-## Remove a Gallery
-
-This method removes a given gallery:
-
-```
-// (1) set up your callback method
-function myDetectCallback(response)
-{
-   alert(response.responseText);
-}
-
-// (2) prepare your parameters  
-var gallery_id = 'friends1';
-
-// (3) pass your params and callback to the function
-kairos.removeGallery(gallery_id, myCallback);
-```
-
-
 
 ## Remove a Subject
 
@@ -200,26 +105,92 @@ function myDetectCallback(response)
 
 // (2) prepare your parameters  
 var subject_id = 'sam';
-var gallery_id = 'friends1';
+var gallery_name = 'friends1';
 
 // (3) pass your params and callback to the function
-kairos.removeSubjectFromGallery(subject_id, gallery_id, myCallback);
+kairos.removeSubjectFromGallery(subject_id, gallery_name, myCallback);
 ```
 
-    
-    
-## Optional Parameters
+## Remove a Gallery
 
-Many of the Kairos API methods expose optional parameters for customizing the api response to fit your use-case. Here is an example of sending custom options in the detect call to limit the response to attributes pertaining to the eyes:
+This method removes a given gallery:
 
 ```
-//...
-var options = { "threshold" : 0.75, "minHeadScale" : 0.5, "selector" : "FACE" };
-kairos.recognize(image_data, gallery_id, myCallback, options);
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var gallery_name = 'friends1';
+
+// (3) pass your params and callback to the function
+kairos.removeGallery(gallery_name, myCallback);
 ```
 
+## Enroll an Image
 
-[![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/kairos-api/kairos-facial-recognition-api)
+The **Enroll** method **registers a face for later recognitions**. Here's an example of enrolling a face (subject) using a method that accepts an image URL or image data in base64 format, and enrolls it as a new subject into your specified gallery:    
+
+```
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var image       = '/images/myphotos/myphoto123.png'; (URL)
+(or) 
+var image      = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n'; (base64)
+var subject_id  = 'eric';
+var gallery_name  = 'friends1';
+
+
+// (3) pass your params and callback to the function
+kairos.enroll(image, subject_id, gallery_name, myCallback);
+```
+## Recognize an Image
+
+The **Recognize** method takes an image of a subject and **attempts to match it against a given gallery of previously-enrolled subjects**. Here's an example of recognizing a subject using a method that accepts an image URL or image data in base64 format, sends it to the API, and returns a match and confidence value:    
+
+```
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var image       = '/images/myphotos/myphoto123.png'; (URL)
+(or) 
+var image      = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n'; (base64)
+gallery_name  = 'friends1';
+
+// (3) pass your params and callback to the function
+kairos.recognize(image, gallery_name, myCallback, options);
+```
+
+## Detect Image Attributes
+
+The **Detect** method takes an image of a subject and **returns various attributes pertaining to the face features**. Here's an example of using detect via method that accepts an image URL or image data in base64 format, sends it to the API, and returns face attributes:    
+
+```
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var image       = '/images/myphotos/myphoto123.png'; (URL)
+(or) 
+var image      = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n'; (base64)
+
+// (3) pass your params and callback to the function
+kairos.detect(image, myCallback, options);
+```
 
 ##Support 
 Have an issue? Visit our [Support page](http://www.kairos.com/support) or [create an issue on GitHub](https://github.com/kairosinc/Kairos-SDK-Javascript)

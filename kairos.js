@@ -8,11 +8,11 @@
 // "app_id: 10f87749" -H "app_key: 5683a80e0c5b3845b5b07a027037ddab"
 /* Constructor - Creates and returns an instance of the Kairos client
   @param app_id  : your app_id
-  @param api_key : your api_key */
-var Kairos = function(app_id, api_key) 
+  @param app_key : your app_key */
+var Kairos = function(app_id, app_key) 
 {
   this.app_id   = app_id;
-  this.api_key  = api_key;
+  this.app_key  = app_key;
   this.api_host = 'https://api.kairos.com/';
 };
 
@@ -35,7 +35,7 @@ function isJQueryAvailable() {
 /* Authentication checker */
 Kairos.prototype.authenticationProvided = function() {
     
-  if((!this.api_key) || (!this.app_id))
+  if((!this.app_key) || (!this.app_id))
   {
       return false;
   }
@@ -52,7 +52,7 @@ Kairos.prototype.authenticationProvided = function() {
 Kairos.prototype.detect = function(image_data, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -82,7 +82,7 @@ Kairos.prototype.detect = function(image_data, callback, options) {
 	var header_settings = {
 		"Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
   	jQuery.ajax(url, {
@@ -107,7 +107,7 @@ Kairos.prototype.detect = function(image_data, callback, options) {
 Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -147,7 +147,7 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -171,7 +171,7 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
 Kairos.prototype.recognize = function(image_data, gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -201,7 +201,7 @@ Kairos.prototype.recognize = function(image_data, gallery_id, callback, options)
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -224,7 +224,7 @@ Kairos.prototype.recognize = function(image_data, gallery_id, callback, options)
 Kairos.prototype.viewGalleries = function(callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -249,7 +249,7 @@ Kairos.prototype.viewGalleries = function(callback, options) {
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -273,7 +273,7 @@ Kairos.prototype.viewGalleries = function(callback, options) {
 Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -303,7 +303,7 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -328,7 +328,7 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
 Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -353,7 +353,7 @@ Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -376,7 +376,7 @@ Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
 Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -406,7 +406,7 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -428,7 +428,7 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
 Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -468,7 +468,7 @@ Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, opti
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {
@@ -484,7 +484,7 @@ Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, opti
 Kairos.prototype.checkAuthentication = function(callback, options) {
 
   if(this.authenticationProvided() == false) {
-    console.log('Kairos Error: set your app_id and api_key before calling this method');
+    console.log('Kairos Error: set your app_id and app_key before calling this method');
     return;
   }
 
@@ -509,7 +509,7 @@ Kairos.prototype.checkAuthentication = function(callback, options) {
   var header_settings = {
     "Content-type"    : "application/json",
         "app_id"          : this.app_id,
-        "app_key"         : this.api_key
+        "app_key"         : this.app_key
       };
 
     jQuery.ajax(url, {

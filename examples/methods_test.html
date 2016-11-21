@@ -4,6 +4,7 @@
 	    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="assets/css/examplestyle.css" rel="stylesheet">
 	    <script src="../kairos.js"></script>
+      <script src="assets/js/methods_test.js"></script>
 	    <style>
 			#view_data {
 				padding: 10px 0;
@@ -32,151 +33,12 @@
     	</style>
   </head>
   <body>
-    <script>
-      var methods_test = methods_test || {}
-
-        methods_test = {
-            init: function () {
-              $("#apiMethodsTests").hide();
-              this.setActions();
-            },
-            setActions: function () {
-              	var self = this;
-              	$("#enterApiKeys").click(function () {
-              		$("#loader").show();
-              		if ($("#api_id").val() != "" && $("#api_key").val() != "") {
-	                	self.kairos = new Kairos($("#api_id").val(), $("#api_key").val());
-	                  	self.kairos.checkAuthentication(function(cb){
-	                  		if (cb.statusText != "error") {
-	                  			$("#loader").hide();
-	                  			$("#apiMethodsTests").show();
-	                  		}
-	                  		else {
-	                  			$("#loader").hide();
-	                  			$("#apiMethodsTests").hide();
-	                  			$("#authenticationError").html("Authentication Error")
-	                  		}
-	                  	});
-	                }
-	                else {
-	                	$("#loader").hide();
-	               		$("#apiMethodsTests").hide();
-                  		$("#authenticationError").html("Plese enter your API keys")
-	                }
-            	});
-	          	$("#testViewGalleries").click(function () {
-	          		$("#loader").show();
-	          		$("#view_data").empty();
-	                self.kairos.viewGalleries(self.success_cb);
-	            });
-	            $("#testEnroll").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#enrollForm input")) == true) {
-	            		$("#loader").show();
-	                	var image_data = $("#image_data").val();
-	                	var gallery_id = $("#gallery_id_enroll").val();
-	                	var subject_id = $("#subject_id_enroll").val();
-	                	self.kairos.enroll(image_data, gallery_id, subject_id, self.success_cb);
-	            	}
-	            });
-
-	            $("#testViewSubjectsInGallery").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#viewSubjectsInGalleryForm input")) == true) {
-	            		$("#loader").show();
-	                	var gallery_id = $("#gallery_id_view_subjects").val();
-	                	self.kairos.viewSubjectsInGallery(gallery_id, self.success_cb);
-	            	}
-	            });
-
-	            $("#testRemoveSubjectFromGallery").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#removeSubjectFromGalleryForm input")) == true) {
-	            		$("#loader").show();
-	                	var subject_id = $("#subject_id_remove_subject").val();
-		                var gallery_id = $("#gallery_id_remove_subject").val();
-		                self.kairos.removeSubjectFromGallery(subject_id, gallery_id, self.success_cb);
-	            	}
-	            });
-
-	            $("#testRemoveGallery").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#removeGalleryForm input")) == true) {
-	            		$("#loader").show();
-	                	var gallery_id = $("#gallery_id_remove_gallery").val();
-		                self.kairos.removeGallery(gallery_id, self.success_cb);
-	            	}
-	            });
-
-	            $("#testRecognize").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#recognizeForm input")) == true) {
-	            		$("#loader").show();
-	                	var image_data = $("#image_data_recognize").val();
-		                var gallery_id = $("#gallery_id_recognize").val();
-		                self.kairos.recognize(image_data, gallery_id, self.success_cb);
-	            	}
-	            });
-
-	            $("#testDetect").click(function () {
-	            	$("#view_data").empty();
-	            	if (self.validateMe($("#detectForm input")) == true) {
-	            		$("#loader").show();
-	                	var image_data = $("#image_data_detect").val();
-		                self.kairos.detect(image_data, self.success_cb);
-	            	}
-	            });	
-
-              $("#testVerify").click(function () {
-                $("#view_data").empty();
-                if (self.validateMe($("#verifyForm input")) == true) {
-                  $("#loader").show();
-                    var image = $("#image_verify").val();
-                    var gallery_id = $("#gallery_id_verify").val();
-                    var subject_id = $("#subject_id_verify").val();
-                    self.kairos.verify(image, gallery_id, subject_id, self.success_cb);
-                }
-              });
-            },
-            validateMe: function(obj) {
-            	var isValid = true;
-            	errorAlert = "";
-        		obj.each(function () {
-            		if($(this).attr("type") == "text") {
-            			if($(this).val() == "") {
-            				isValid = false;
-            				errorAlert = errorAlert + "Please enter a value for " + $(this).attr("name") + "\n";
-            			}
-            		}
-            	});
-            	if (isValid == false) {
-            		alert(errorAlert)
-            	}
-            	return isValid;
-            },
-            success_cb: function(data){
-              $("#view_data").empty();
-              $("#view_data").html(data.responseText);
-              $("#loader").hide();
-              $("input:text").val("");
-              // console.log(data)
-          	}
-            
-        }
-        $(function () {
-          methods_test.init()
-      });
-    </script>
-
     <div class="container">
       	<div class="row">
-        	<h3>Enter API Keys:</h3>
-        	<!-- test keys -->
-        	<!-- 7736975c -->
-        	<!-- 7120d65a1779e0c235d5110c9fb8119a -->
+        	<h3>Enter APP Keys:</h3>
         	<form>
-          		API ID: <input type="text" id="api_id" class="api-key" value="">
-            		API KEY: <input type="text" id="api_key" class="api-key" value="">
+          		APP ID: <input type="text" id="app_id" class="app-key" value="">
+            		APP KEY: <input type="text" id="app_key" class="app-key" value="">
             		<input type="button" id="enterApiKeys" value="Enter" />
           	</form>
           	<div id="authenticationError"></div>
@@ -196,10 +58,10 @@
             <div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>enroll() Method</h4>
               	<form id="enrollForm">
-                	Image: <input type="text" id="image_data" name="Image">
-                  	Gallery ID: <input type="text" id="gallery_id_enroll" name="Gallery ID">
-                  	Subject ID: <input type="text" id="subject_id_enroll" name="Subject ID">
-                  	<input type="button" id="testEnroll" value="Test" />
+                  Image: <input type="text" class="image" name="Image">
+                	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
+                	Subject ID: <input type="text" class="subject_id" name="Subject ID">
+                	<input type="button" id="testEnroll" value="Test" />
               	</form>
             </div>
       	</div>
@@ -207,8 +69,8 @@
             <div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>viewSubjectsInGallery() Method</h4>
               	<form id="viewSubjectsInGalleryForm">
-                	Gallery ID: <input type="text" id="gallery_id_view_subjects" name="Gallery ID">
-                  	<input type="button" id="testViewSubjectsInGallery" value="Test" />
+                	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
+                	<input type="button" id="testViewSubjectsInGallery" value="Test" />
               	</form>
             </div>
       	</div>
@@ -216,8 +78,8 @@
             	<div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>removeSubjectFromGallery() Method</h4>
               	<form id="removeSubjectFromGalleryForm">
-                  	Subject ID: <input type="text" id="subject_id_remove_subject" name="Subject ID">
-                  	Gallery ID: <input type="text" id="gallery_id_remove_subject" name="Gallery ID">
+                  	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
+                    Subject ID: <input type="text" class="subject_id" name="Subject ID">
                   	<input type="button" id="testRemoveSubjectFromGallery" value="Test" />
               	</form>
             </div>
@@ -226,7 +88,7 @@
         	<div class="method-test">
           		<span class="glyphicon glyphicon-play"></span><h4>removeGallery() Method</h4>
           		<form id="removeGalleryForm">
-              		Gallery ID: <input type="text" id="gallery_id_remove_gallery" name="Gallery ID">
+              		Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
               		<input type="button" id="testRemoveGallery" value="Test" />
           		</form>
         	</div>
@@ -235,9 +97,9 @@
             <div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>recognize() Method</h4>
               	<form id="recognizeForm">
-                	Image: <input type="text" id="image_data_recognize" name="Image">
-                  	Gallery ID: <input type="text" id="gallery_id_recognize" name="Gallery ID">
-                  	<input type="button" id="testRecognize" value="Test" />
+                	Image: <input type="text" class="image" name="Image">
+                	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
+                	<input type="button" id="testRecognize" value="Test" />
               	</form>
             </div>
       	</div>
@@ -245,8 +107,8 @@
         	<div class="method-test">
           		<span class="glyphicon glyphicon-play"></span><h4>detect() Method</h4>
           		<form id="detectForm">
-            		Image: <input type="text" id="image_data_detect" name="Image">
-              		<input type="button" id="testDetect" value="Test" />
+            		Image: <input type="text" class="image" name="Image">
+            		<input type="button" id="testDetect" value="Test" />
           		</form>
         	</div>
       	</div>
@@ -254,9 +116,9 @@
           <div class="method-test">
               <span class="glyphicon glyphicon-play"></span><h4>verify() Method</h4>
               <form id="verifyForm">
-                  Image: <input type="text" id="image_verify" name="Image">
-                  Subject ID: <input type="text" id="subject_id_verify" name="Subject ID">
-                  Gallery ID: <input type="text" id="gallery_id_verify" name="Gallery ID">
+                  Image: <input type="text" class="image" name="Image">
+                  Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
+                  Subject ID: <input type="text" class="subject_id" name="Subject ID">
                   <input type="button" id="testVerify" value="Test" />
               </form>
           </div>
@@ -267,8 +129,6 @@
         	<div id="view_data" class="col-lg-8"></div>
       	</div>
     </div>
-
-    <script src="assets/js/bootstrap.min.js"></script>
 
   </body>
 </html> 
