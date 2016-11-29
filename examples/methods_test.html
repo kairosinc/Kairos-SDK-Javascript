@@ -35,7 +35,7 @@
   <body>
     <div class="container">
       	<div class="row">
-        	<h3>Enter APP Keys:</h3>
+        	<h3>Enter API Keys:</h3>
         	<form>
           		APP ID: <input type="text" id="app_id" class="app-key" value="">
             		APP KEY: <input type="text" id="app_key" class="app-key" value="">
@@ -58,7 +58,8 @@
             <div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>enroll() Method</h4>
               	<form id="enrollForm">
-                  Image: <input type="text" class="image" name="Image">
+                  Image (public URL or base64 data): <input type="text" class="image" name="Image">
+                  Image (local file): <input type="file" class="image-upload" name="Image Upload">
                 	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
                 	Subject ID: <input type="text" class="subject_id" name="Subject ID">
                 	<input type="button" id="testEnroll" value="Test" />
@@ -97,7 +98,8 @@
             <div class="method-test">
               	<span class="glyphicon glyphicon-play"></span><h4>recognize() Method</h4>
               	<form id="recognizeForm">
-                	Image: <input type="text" class="image" name="Image">
+                	Image (public URL or base64 data): <input type="text" class="image" name="Image">
+                  Image (local file): <input type="file" class="image-upload" name="Image Upload">
                 	Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
                 	<input type="button" id="testRecognize" value="Test" />
               	</form>
@@ -107,7 +109,8 @@
         	<div class="method-test">
           		<span class="glyphicon glyphicon-play"></span><h4>detect() Method</h4>
           		<form id="detectForm">
-            		Image: <input type="text" class="image" name="Image">
+            		Image (public URL or base64 data): <input type="text" class="image" name="Image">
+                Image (local file): <input type="file" class="image-upload" name="Image Upload">
             		<input type="button" id="testDetect" value="Test" />
           		</form>
         	</div>
@@ -116,7 +119,8 @@
           <div class="method-test">
               <span class="glyphicon glyphicon-play"></span><h4>verify() Method</h4>
               <form id="verifyForm">
-                  Image: <input type="text" class="image" name="Image">
+                  Image (public URL or base64 data): <input type="text" class="image" name="Image">
+                  Image (local file): <input type="file" class="image-upload" name="Image Upload">
                   Gallery ID: <input type="text" class="gallery_name" name="Gallery Name">
                   Subject ID: <input type="text" class="subject_id" name="Subject ID">
                   <input type="button" id="testVerify" value="Test" />
@@ -124,7 +128,7 @@
           </div>
         </div>
       	<div class="row">
-        	<h5>Callback:</h5>
+        	<h5>Response:</h5>
         	<img src="assets/images/loading.gif" id="loader">
         	<div id="view_data" class="col-lg-8"></div>
       	</div>

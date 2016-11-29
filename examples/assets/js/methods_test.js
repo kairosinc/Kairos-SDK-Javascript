@@ -36,13 +36,24 @@ methods_test = {
         });
         $("#testEnroll").click(function () {
         	$("#view_data").empty();
-        	if (self.validateMe($("#enrollForm input")) == true) {
-        		$("#loader").show();
-            	var image = $("#enrollForm .image").val();
-            	var subject_id = $("#enrollForm .subject_id").val();
-            	var gallery_name = $("#enrollForm .gallery_name").val();
-            	self.kairos.enroll(image, gallery_name, subject_id, self.success_cb);
-        	}
+        	if (self.validateMe($("#enrollForm")) == true) {
+            $("#loader").show();
+            gallery_name = $("#enrollForm .gallery_name").val();
+            subject_id = $("#enrollForm .subject_id").val();
+            if($("#enrollForm .image-upload").val() != "") {
+              var file = $('#enrollForm .image-upload')[0].files[0]; 
+              var reader  = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = function () {
+                var fileData = parseImageData(reader.result);
+                self.kairos.enroll(fileData, gallery_name, subject_id, self.success_cb);
+              }
+            }
+            else {
+              image = $("#enrollForm .image").val();
+              self.kairos.enroll(image, gallery_name, subject_id, self.success_cb);
+            }
+          }
         });
 
         $("#testViewSubjectsInGallery").click(function () {
@@ -75,58 +86,115 @@ methods_test = {
 
         $("#testRecognize").click(function () {
         	$("#view_data").empty();
-        	if (self.validateMe($("#recognizeForm input")) == true) {
-        		$("#loader").show();
-            	var image = $("#recognizeForm .image").val();
-                var gallery_name = $("#recognizeForm .gallery_name").val();
-                self.kairos.recognize(image, gallery_name, self.success_cb);
-        	}
+        	if (self.validateMe($("#recognizeForm")) == true) {
+            $("#loader").show();
+            gallery_name = $("#recognizeForm .gallery_name").val();
+            if($("#recognizeForm .image-upload").val() != "") {
+              var file = $('#recognizeForm .image-upload')[0].files[0]; 
+              var reader  = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = function () {
+                var fileData = parseImageData(reader.result);
+                self.kairos.recognize(fileData, gallery_name, self.success_cb);
+              }
+            }
+            else {
+              image = $("#recognizeForm .image").val();
+              self.kairos.recognize(image, gallery_name, self.success_cb);
+            }
+          }
         });
 
         $("#testDetect").click(function () {
         	$("#view_data").empty();
-        	if (self.validateMe($("#detectForm input")) == true) {
-        		$("#loader").show();
-            	var image = $("#detectForm .image").val();
-                self.kairos.detect(image, self.success_cb);
-        	}
+        	if (self.validateMe($("#detectForm")) == true) {
+            $("#loader").show();
+            if($("#detectForm .image-upload").val() != "") {
+              var file = $('#detectForm .image-upload')[0].files[0]; 
+              var reader  = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = function () {
+                var fileData = parseImageData(reader.result);
+                self.kairos.detect(fileData, self.success_cb);
+              }
+            }
+            else {
+              image = $("#detectForm .image").val();
+              self.kairos.detect(image, self.success_cb);
+            }
+          }
         });	
 
       $("#testVerify").click(function () {
         $("#view_data").empty();
-        if (self.validateMe($("#verifyForm input")) == true) {
+        if (self.validateMe($("#verifyForm")) == true) {
           $("#loader").show();
-            var image = $("#verifyForm .image").val();
-        	var subject_id = $("#verifyForm .subject_id").val();
-        	var gallery_name = $("#verifyForm .gallery_name").val();
+          gallery_name = $("#verifyForm .gallery_name").val();
+          subject_id = $("#verifyForm .subject_id").val();
+          if($("#verifyForm .image-upload").val() != "") {
+            var file = $('#verifyForm .image-upload')[0].files[0]; 
+            var reader  = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+              var fileData = parseImageData(reader.result);
+              self.kairos.verify(fileData, gallery_name, subject_id, self.success_cb);
+            }
+          }
+          else {
+            image = $("#verifyForm .image").val();
             self.kairos.verify(image, gallery_name, subject_id, self.success_cb);
+          }
         }
       });
     },
     validateMe: function(obj) {
-    	var isValid = true;
-    	errorAlert = "";
-		obj.each(function () {
-    		if($(this).attr("type") == "text") {
-    			if($(this).val() == "") {
-    				isValid = false;
-    				errorAlert = errorAlert + "Please enter a value for " + $(this).attr("name") + "\n";
-    			}
-    		}
-    	});
-    	if (isValid == false) {
-    		alert(errorAlert)
-    	}
-    	return isValid;
+      var isValid = true;
+      errorAlert = "";
+      var fileUploaded = false;
+      if(obj.find(".image-upload").val() != "") {
+        fileUploaded = true;
+      }
+      obj.find("input").each(function () {
+        if($(this).attr("type") == "text" && !$(this).hasClass("image")) {
+          if($(this).val() == "") {
+            isValid = false;
+            errorAlert = errorAlert + "Please enter a value for " + $(this).attr("name") + "\n";
+          }
+        }
+        if($(this).hasClass("image")) {
+          if($(this).val() == "" && !fileUploaded) {
+            isValid = false;
+            errorAlert = errorAlert + "Please either enter an image URL or image base64 data, or upload an image" + "\n";
+          }
+          if($(this).val() != "" && fileUploaded) {
+            isValid = false;
+            $(this).val("");
+            $("input:file").val("");
+            errorAlert = errorAlert + "You cannot enter an image URL or image base64 data AND upload an image.  Please do one or the other." + "\n";
+          }
+        }
+      });
+      if (isValid == false) {
+        alert(errorAlert)
+      }
+      return isValid;
     },
     success_cb: function(data){
       $("#view_data").empty();
       $("#view_data").html(data.responseText);
       $("#loader").hide();
       $("input:text").val("");
-      // console.log(data)
+      $("input:file").val("");
   	}
     
+}
+var parseImageData = function(imageData) {
+    imageData = imageData.replace("data:image/jpeg;base64,", "");
+    imageData = imageData.replace("data:image/jpg;base64,", "");
+    imageData = imageData.replace("data:image/png;base64,", "");
+    imageData = imageData.replace("data:image/gif;base64,", "");
+    imageData = imageData.replace("data:image/bmp;base64,", "");
+    return imageData;
 }
 $(function () {
   methods_test.init()

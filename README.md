@@ -151,6 +151,7 @@ var gallery_name  = 'friends1';
 // (3) pass your params and callback to the function
 kairos.enroll(image, subject_id, gallery_name, myCallback);
 ```
+`The SDK also includes a file upload field, which converts a local image file to base64 data.`
 ## Recognize an Image
 
 The **Recognize** method takes an image of a subject and **attempts to match it against a given gallery of previously-enrolled subjects**. Here's an example of recognizing a subject using a method that accepts an image URL or image data in base64 format, sends it to the API, and returns a match and confidence value:    
@@ -172,6 +173,8 @@ gallery_name  = 'friends1';
 kairos.recognize(image, gallery_name, myCallback, options);
 ```
 
+`The SDK also includes a file upload field, which converts a local image file to base64 data.`
+
 ## Detect Image Attributes
 
 The **Detect** method takes an image of a subject and **returns various attributes pertaining to the face features**. Here's an example of using detect via method that accepts an image URL or image data in base64 format, sends it to the API, and returns face attributes:    
@@ -191,6 +194,31 @@ var image      = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n'; (base64)
 // (3) pass your params and callback to the function
 kairos.detect(image, myCallback, options);
 ```
+
+`The SDK also includes a file upload field, which converts a local image file to base64 data.`
+
+## Verify image
+
+The **Verify** method takes an image and verifies that it matches an existing subject in a gallery.  Here's an example of using verify via method that accepts a path to an image file, sends it to the API, and returns face attributes: 
+
+```
+// (1) set up your callback method
+function myDetectCallback(response)
+{
+   alert(response.responseText);
+}
+
+// (2) prepare your parameters  
+var image       = '/images/myphotos/myphoto123.png'; (URL)
+(or) 
+var image      = 'iVBORw0KGgoAAA ... ABJRU5ErkJggg==\r\n'; (base64)
+var subject_id  = 'eric';
+var gallery_name  = 'friends1';
+
+// (3) pass your params and callback to the function
+kairos.detect(image, subject_id, gallery_name, callback);
+```
+`The SDK also includes a file upload field, which converts a local image file to base64 data.`
 
 ##Support 
 Have an issue? Visit our [Support page](http://www.kairos.com/support) or [create an issue on GitHub](https://github.com/kairosinc/Kairos-SDK-Javascript)
