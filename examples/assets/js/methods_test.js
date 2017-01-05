@@ -30,6 +30,7 @@ methods_test = {
             }
     	});
       	$("#testViewGalleries").click(function () {
+          self.startTimer();
       		$("#loader").show();
       		$("#view_data").empty();
             self.kairos.viewGalleries(self.success_cb);
@@ -37,6 +38,7 @@ methods_test = {
         $("#testEnroll").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#enrollForm")) == true) {
+            self.startTimer();
             $("#loader").show();
             gallery_name = $("#enrollForm .gallery_name").val();
             subject_id = $("#enrollForm .subject_id").val();
@@ -59,6 +61,7 @@ methods_test = {
         $("#testViewSubjectsInGallery").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#viewSubjectsInGalleryForm input")) == true) {
+            self.startTimer();
         		$("#loader").show();
             	var gallery_name = $("#viewSubjectsInGalleryForm .gallery_name").val();
             	self.kairos.viewSubjectsInGallery(gallery_name, self.success_cb);
@@ -68,6 +71,7 @@ methods_test = {
         $("#testRemoveSubjectFromGallery").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#removeSubjectFromGalleryForm input")) == true) {
+            self.startTimer();
         		$("#loader").show();
             	var subject_id = $("#removeSubjectFromGalleryForm .subject_id").val();
             	var gallery_name = $("#removeSubjectFromGalleryForm .gallery_name").val();
@@ -78,6 +82,7 @@ methods_test = {
         $("#testRemoveGallery").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#removeGalleryForm input")) == true) {
+            self.startTimer();
         		$("#loader").show();
             	var gallery_name = $("#removeGalleryForm .gallery_name").val();
                 self.kairos.removeGallery(gallery_name, self.success_cb);
@@ -87,6 +92,7 @@ methods_test = {
         $("#testRecognize").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#recognizeForm")) == true) {
+            self.startTimer();
             $("#loader").show();
             gallery_name = $("#recognizeForm .gallery_name").val();
             if($("#recognizeForm .image-upload").val() != "") {
@@ -108,6 +114,7 @@ methods_test = {
         $("#testDetect").click(function () {
         	$("#view_data").empty();
         	if (self.validateMe($("#detectForm")) == true) {
+            self.startTimer();
             $("#loader").show();
             if($("#detectForm .image-upload").val() != "") {
               var file = $('#detectForm .image-upload')[0].files[0]; 
@@ -128,6 +135,7 @@ methods_test = {
       $("#testVerify").click(function () {
         $("#view_data").empty();
         if (self.validateMe($("#verifyForm")) == true) {
+          self.startTimer();
           $("#loader").show();
           gallery_name = $("#verifyForm .gallery_name").val();
           subject_id = $("#verifyForm .subject_id").val();
@@ -180,12 +188,21 @@ methods_test = {
       return isValid;
     },
     success_cb: function(data){
+      clearInterval(self.timer);
       $("#view_data").empty();
       $("#view_data").html(data.responseText);
       $("#loader").hide();
       $("input:text").val("");
       $("input:file").val("");
-  	}
+  	},
+    startTimer: function() {
+      $(".timer").html("");
+      var currTime = 0;
+      self.timer = setInterval(function(){
+        currTime ++;
+        $("#timer").html(currTime + " sec");
+      },1000);
+    }
     
 }
 var parseImageData = function(imageData) {
