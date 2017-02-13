@@ -222,3 +222,5 @@ kairos.detect(image, subject_id, gallery_name, callback);
 
 ##Support 
 Have an issue? Visit our [Support page](http://www.kairos.com/support) or [create an issue on GitHub](https://github.com/kairosinc/Kairos-SDK-Javascript)
+
+Test on [RapidAPI](https://rapidapi.com/package/KairosAPI/functions?utm_source=KairosGitHub&utm_medium=button)
