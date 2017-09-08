@@ -216,7 +216,7 @@ var subject_id  = 'eric';
 var gallery_name  = 'friends1';
 
 // (3) pass your params and callback to the function
-kairos.detect(image, subject_id, gallery_name, callback);
+kairos.verify(image, gallery_name, subject_id, callback);
 ```
 `The SDK also includes a file upload field, which converts a local image file to base64 data.`
 
