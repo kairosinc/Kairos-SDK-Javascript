@@ -149,7 +149,7 @@ var gallery_name  = 'friends1';
 
 
 // (3) pass your params and callback to the function
-kairos.enroll(image, subject_id, gallery_name, myCallback);
+kairos.enroll(image, gallery_name, subject_id, myCallback);
 ```
 `The SDK also includes a file upload field, which converts a local image file to base64 data.`
 ## Recognize an Image
