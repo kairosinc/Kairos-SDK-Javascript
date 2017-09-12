@@ -100,11 +100,11 @@ Kairos.prototype.detect = function(image_data, callback, options) {
 
 /* Enroll an image
   @param image_data : this is the base64 data of the image
-  @param gallery_id : the gallery name you want to enroll into
+  @param gallery_name : the gallery name you want to enroll into
   @param subject_id : the subject id you want to enroll the image under
   @param callback   : your callback function will be called when the request completes 
   @param options    : [Optional] an object containing any additional parameters you wish to append to the request */
-Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback, options) {
+Kairos.prototype.enroll = function(image_data, gallery_name, subject_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -121,8 +121,8 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
     return;
   }
 
-  if(!gallery_id) {
-    console.log('Kairos Error: the gallery_id parameter is required');
+  if(!gallery_name) {
+    console.log('Kairos Error: the gallery_name parameter is required');
     return;
   }
 
@@ -138,7 +138,7 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
   
   var url = this.api_host + 'enroll';
 
-  var data = { 'image' : image_data , 'gallery_name' : gallery_id, 'subject_id' : subject_id};
+  var data = { 'image' : image_data , 'gallery_name' : gallery_name, 'subject_id' : subject_id};
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -165,10 +165,10 @@ Kairos.prototype.enroll = function(image_data, gallery_id, subject_id, callback,
 
 /* Recognize faces in an image
   @param image_data : this is the base64 data of the image
-  @param gallery_id : the gallery name you want to enroll into
+  @param gallery_name : the gallery name you want to enroll into
   @param callback   : your callback function will be called when the request completes 
   @param options    : [Optional] an object containing any additional parameters you wish to append to the request */
-Kairos.prototype.recognize = function(image_data, gallery_id, callback, options) {
+Kairos.prototype.recognize = function(image_data, gallery_name, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -192,7 +192,7 @@ Kairos.prototype.recognize = function(image_data, gallery_id, callback, options)
   
   var url = this.api_host + 'recognize';
 
-  var data = { 'image' : image_data , 'gallery_name' : gallery_id };
+  var data = { 'image' : image_data , 'gallery_name' : gallery_name };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -267,10 +267,10 @@ Kairos.prototype.viewGalleries = function(callback, options) {
 
 
 /* Lists all subjects currently enrolled in a given gallery
-  @param gallery_id : the gallery name for the gallery you wish to return info about
+  @param gallery_name : the gallery name for the gallery you wish to return info about
   @param callback   : your callback function will be called when the request completes 
   @param options    : [Optional] an object containing any additional parameters you wish to append to the request */
-Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options) {
+Kairos.prototype.viewSubjectsInGallery = function(gallery_name, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -282,8 +282,8 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
     return;
   }
 
-  if(!gallery_id) {
-    console.log('Kairos Error: the gallery_id parameter is required');
+  if(!gallery_name) {
+    console.log('Kairos Error: the gallery_name parameter is required');
     return;
   }
 
@@ -294,7 +294,7 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
   
   var url = this.api_host + 'gallery/view';
 
-  var data = { 'gallery_name' : gallery_id };
+  var data = { 'gallery_name' : gallery_name };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -323,9 +323,9 @@ Kairos.prototype.viewSubjectsInGallery = function(gallery_id, callback, options)
 
 
 /* Remove a gallery
-  @param gallery_id : the gallery name you want to enroll into
+  @param gallery_name : the gallery name you want to enroll into
   @param callback   : your callback function will be called when the request completes */
-Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
+Kairos.prototype.removeGallery = function(gallery_name, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -337,14 +337,14 @@ Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
     return;
   }
 
-  if(!gallery_id) {
-    console.log('Kairos Error: the gallery_id parameter is required');
+  if(!gallery_name) {
+    console.log('Kairos Error: the gallery_name parameter is required');
     return;
   }
   
   var url = this.api_host + 'gallery/remove';
 
-  var data = { 'gallery_name' : gallery_id };
+  var data = { 'gallery_name' : gallery_name };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -371,9 +371,9 @@ Kairos.prototype.removeGallery = function(gallery_id, callback, options) {
 
 /* Remove a subject from a gallery
   @param subject_id : the subject id you want to enroll the image under
-  @param gallery_id : the gallery name you want to enroll into
+  @param gallery_name : the gallery name you want to enroll into
   @param callback   : your callback function will be called when the request completes */
-Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, callback, options) {
+Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_name, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -385,8 +385,8 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
     return;
   }
 
-  if(!gallery_id) {
-    console.log('Kairos Error: the gallery_id parameter is required');
+  if(!gallery_name) {
+    console.log('Kairos Error: the gallery_name parameter is required');
     return;
   }
 
@@ -397,7 +397,7 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
   
   var url = this.api_host + 'gallery/remove_subject';
 
-  var data = { 'gallery_name' : gallery_id, 'subject_id' : subject_id};
+  var data = { 'gallery_name' : gallery_name, 'subject_id' : subject_id};
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
@@ -421,11 +421,11 @@ Kairos.prototype.removeSubjectFromGallery = function(subject_id, gallery_id, cal
 
 /* Verify a face in a gallery
   @param image : this is the base64 data of the image or a publicly accessible URL
-  @param gallery_id : the gallery name you want to check
+  @param gallery_name:  the gallery name you want to check
   @param subject_id : an enrolled subject you want to check against
   @param callback   : your callback function will be called when the request completes 
   @param options    : [Optional] an object containing any additional parameters you wish to append to the request */
-Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, options) {
+Kairos.prototype.verify = function(image, gallery_name, subject_id, callback, options) {
 
   if(this.authenticationProvided() == false) {
     console.log('Kairos Error: set your app_id and app_key before calling this method');
@@ -442,8 +442,8 @@ Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, opti
     return;
   }
 
-  if(!gallery_id) {
-    console.log('Kairos Error: the gallery_id parameter is required');
+  if(!gallery_name) {
+    console.log('Kairos Error: the gallery_name parameter is required');
     return;
   }
 
@@ -459,7 +459,7 @@ Kairos.prototype.verify = function(image, gallery_id, subject_id, callback, opti
   
   var url = this.api_host + 'verify';
 
-  var data = { 'image' : image , 'gallery_name' : gallery_id , 'subject_id' : subject_id };
+  var data = { 'image' : image , 'gallery_name' : gallery_name , 'subject_id' : subject_id };
 
   if(!jQuery.isEmptyObject(options)) {
       data = jQuery.extend(data, options);
